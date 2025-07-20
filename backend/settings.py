@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-_y*(_@i+@oyg470dg#sx3)4(u)qy+#$+cov&4(logqs8t=a)kk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['auth-backend.onrender.com']
+ALLOWED_HOSTS = ['auth-backend-wfdf.onrender.com']
 
 
 # Application definition
@@ -132,7 +132,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS =["http://localhost:3000",]
+CORS_ALLOWED_ORIGINS =["http://localhost:3000", "https://auth-backend-wfdf.onrender.com",]
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
