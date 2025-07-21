@@ -164,3 +164,8 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 3600  # Enforce HTTPS for 1 hour (can increase later)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    
+CSRF_TRUSTED_ORIGINS = [
+    "https://auth-backend-wfdf.onrender.com", "https://BrunexItech.github.io"
+]
+
