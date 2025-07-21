@@ -134,6 +134,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS =["http://localhost:3000","https://BrunexItech.github.io", "https://auth-backend-wfdf.onrender.com"]
+CORS_ALLOW_CREDENTIALS = True
+CORS_EXPOSE_HEADERS = ['Content-Type', 'Authorization']
+
+
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
