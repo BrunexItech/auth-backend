@@ -76,7 +76,7 @@ class PasswordResetRequestView(APIView):
         
         frontend_url = settings.FRONTEND_URL
         
-        reset_link = f"{frontend_url}/reset-password/{uid64}/{token}"
+        reset_link = f"{frontend_url}/#/reset-password/{uid64}/{token}"
         
         send_mail(
             subject="Password Reset Request",
