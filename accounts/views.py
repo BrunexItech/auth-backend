@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import SignupSerializer, BookingSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import MyTokenObtainPairSerializer
+from .serializers import MyTokenObtainPairSerializer, UserProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 from .models import Booking
+from  django.utils import timezone
 
 #The password reset imports 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -36,13 +37,22 @@ class MyLoginView(TokenObtainPairView):
 class ProfileView(APIView):
     permission_classes=[IsAuthenticated]
     
+    
     def get(self, request):
+        serializer = UserProfileSerializer(request.user, context={'request':request})
+        return Response(serializer.data)
+    
+    
+    #This is commented out
+    '''def get(self, request):
         user=request.user
         return Response({
             'message':'You are authenticated',
             'email':user.email,
-            'username':user.username
-        })
+            'first_name':user.first_name,
+            'username':user.username,
+            'profile_image':request.build_absolute_uri(user.profile_image.url) if user.profile_image else None,
+        })'''
     
     
 
@@ -111,3 +121,61 @@ class PasswordResetConfirmView(APIView):
         user.save()
         
         return Response({"message":"Password has been reset successfully"}, status=status.HTTP_200_OK) 
+    
+    
+    
+class EditProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    
+    def patch(self, request):
+        user=request.user
+        serializer =UserProfileSerializer(
+            user, data=request.data, partial=True, context={'request':request}
+        )
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {'message': 'Profile updated successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+        
+        
+    
+    '''def put(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user, data=request.data, partial = True)
+        
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response ({'message':"Profile updated successfully"}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    '''
+    
+    #Booking History
+    
+class BookingHistoryView(APIView):
+        permission_classes = [IsAuthenticated]
+        
+        
+        def get(self, request):
+            user=request.user
+            past_bookings = Booking.objects.filter(user=user, date__lt=timezone.now()).order_by('-date')
+            serializer=BookingSerializer(past_bookings, many=True)
+            return Response(serializer.data)
+        
+        
+class UpcomingBookingsView(APIView):
+        permission_classes = [IsAuthenticated]
+        
+        def get(self, request):
+            user=request.user
+            upcoming_bookings = Booking.objects.filter(user=user, date__gte=timezone.now()).order_by('date')
+            serializer=BookingSerializer(upcoming_bookings, many=True)
+            return Response(serializer.data)
+    
+
+
