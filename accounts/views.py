@@ -16,10 +16,12 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 # Create your views here.
 class SignupView(APIView):
+    parser_classes = [MultiPartParser , FormParser]
     
     def post(self, request):
         serializer=SignupSerializer(data=request.data)
@@ -126,6 +128,7 @@ class PasswordResetConfirmView(APIView):
     
 class EditProfileView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
     
     
     def patch(self, request):
