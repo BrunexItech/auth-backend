@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     username=models.CharField(max_length=100)
     first_name=models.CharField(max_length=100)
     last_name=models.CharField(max_length=100)
-    phone_number=models.CharField(max_length=15)
+    phone_number=models.CharField(max_length=30)
     profile_image=models.ImageField(upload_to='profile_images/', blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
@@ -49,7 +49,7 @@ class Booking(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     destination = models.CharField(max_length=100)
     date = models.DateField()
-    phone_number = models.CharField(max_length=15)
+    phone_number = models.CharField(max_length=30)
     number_of_travelers = models.PositiveIntegerField(default=1)
     
     GROUP_CHOICES = [
